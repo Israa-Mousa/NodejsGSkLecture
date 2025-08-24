@@ -1,53 +1,59 @@
-import { error } from 'console';
-import express,{Request,Response,NextFunction} from 'express';
-
+import express, { Request, Response, NextFunction } from 'express';
+import path from 'node:path';
+import fs from 'node:fs';
 const PORT = 4000;
 const app = express();
- app.use(express.json()); 
 
- app.use(express.urlencoded());
+// global middleware that handle parseing the request and call next under the hood
+app.use((req, res, next) => {
+  console.log(req.path, 'is hit');
+  next();
+});
 
 app.use(express.json());
-app.use((req,res,next)=>{
-console.log(`iam first mid`);
-res.setHeader('cache-control','public max-age=3600');
-req.body = {name:'israa',age:29};
-// reqssd.israa=2;
-next();
-});
+app.use(express.urlencoded());
 
-app.use((req:Request<{},{},{name:string}>,res,next)=>{
-console.log(`iam second mid`);
-console.log(req.body.name);
-
-// res.send(`Hello from Express!`);
-next()
-})
-app.get('/profile',async(req,res,next)=>{
-    try {
-        console.log(`iam third mid`); 
-        const profileData=await fetch('profile');
-            res.json({success:true,data:{name:'Israa'}})
-      
-    }   catch (error) {
-        console.log('ereror in third middleware:', error);
-        res.status(400).send('Error fetching profile data');
-       }
-    next()
-})
-// app.get('/profile',(req,res,next)=>{
-//     res.json({success:true,data:{name:'mazara'}})
-//     next()
-// })
-app.use((error:Error,req:Request,res:Response,next:NextFunction)=>{
-    console.error(error);       
-    res.status(500).json({sucess:false,message:'Internal Server Error'});
-});
-app.use((req,res)=>{
-   const path= req.path;
-    res.status(404).send(`this path ${path} does not exist`);
-})
-app.listen(PORT,()=> {
-    console.log(`Server is running on port ${PORT}`);  
- }
+app.use(
+  express.static(path.join(__dirname, 'public'), {
+    setHeaders: (res, path) => {
+      res.setHeader('cache-control', `public max-age=${5}`);
+    }
+  })
 );
+
+// app.use('/users', authMiddleware);
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+  // alert system
+  console.log(error);
+  res.status(500).json({ success: false, message: 'internal server' });
+});
+
+const notFoundPath = path.join(__dirname, 'public', '404.html');
+
+// Read the 404.html template for dynamic content
+const NotFoundPageHTML = fs.readFileSync(notFoundPath, 'utf8');
+ app.get('/page1',(req:Request,res:Response)=>{
+    res.send('Hello world');
+  });
+
+// fallback for any un defined route --> 404
+app.use((req: Request, res: Response) => {
+  // Check if it's an API route
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({
+      success: false,
+      message: `Route ${req.method} ${req.path} not found`
+    });
+  }
+ 
+  const dynamicHtml = NotFoundPageHTML.replace(/{{requestedPath}}/g, req.path)
+    .replace(/{{method}}/g, req.method)
+    .replace(/{{timestamp}}/g, new Date().toLocaleString());
+
+  // For static files, use the dynamic 404 template
+
+  res.status(404).send(dynamicHtml);
+});
+app.listen(PORT, () => {
+  console.log('App is running in port: ', PORT);
+});
