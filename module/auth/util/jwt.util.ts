@@ -3,7 +3,7 @@ import { string } from 'zod/mini';
 import { getEnvOrThrow } from '../../../utils/utils';
 //string
 const JWT_PAYLOAD={userId:string};
-const JWT_SECRET=getEnvOrThrow('JWT_SECRET');
+const JWT_SECRET=String(getEnvOrThrow('JWT_SECRET'));
 export const signJwt = (
     payload: JwtPayload,
     options?: SignOptions

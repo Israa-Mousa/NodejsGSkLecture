@@ -5,7 +5,7 @@ export class UserRepository {
   private users: User[] = [
     {
       id: 'u1',
-      name: 'Alice Johnson',
+      name: 'Alice Johnson',  
       email: 'alice@example.com',
       createdAt: new Date('2025-01-01T10:00:00Z'),
       updatedAt: new Date('2025-01-01T10:00:00Z'),

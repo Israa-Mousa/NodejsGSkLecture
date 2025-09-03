@@ -85,8 +85,11 @@ const token=signJwt({sub:userData.id,name:userData.name});
    public logout(req:Request,res:Response,next:NextFunction){
    // res.send("logout")
   req.session.destroy(function(err){  
-    throw  new Error("Could not destroy session");
+    //throw  new Error("Could not destroy session");
+    next(err);
   })
+  //res.status(200).end()
+  res.ok({})
 }
 }
 export const authController=new AuthController();
