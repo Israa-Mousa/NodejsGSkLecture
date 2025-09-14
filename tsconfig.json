@@ -47,4 +47,5 @@
   },
   "include": ["src/**/*", "test/**/*"]
   //this will include all files in src and test folders
+  // "exclude": ["node_modules", "dist"]
 }
