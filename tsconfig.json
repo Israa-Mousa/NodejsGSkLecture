@@ -12,7 +12,7 @@
     "types": [],
     // For nodejs:
     "lib": ["esnext"],
-    "types": ["node"],
+    "types": ["node","jest"], // If you use a library that provides its own types, you can add them here
     // and npm install -D @types/node
 
     // Other Outputs
@@ -40,5 +40,11 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+       "baseUrl": ".",
+    "paths": {
+      "@test/*": ["test/*"]
+    }
+  },
+  "include": ["src/**/*", "test/**/*"]
+  
 }

@@ -18,7 +18,8 @@ import { responseEnhancer } from './middlewares/response.middleware';
 const PORT = getEnvOrThrow('PORT');
 console.log('process.env.PORT',process.env.PORT);
 
-const app = express();
+export const app = express();
+
 // global middleware that handle parseing the request and call next under the hood
 app.use((req, res, next) => {
   console.log(req.path, 'is hit');

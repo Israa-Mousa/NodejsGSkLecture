@@ -19,6 +19,6 @@ export const handleError = (error: unknown, res: Response) => {
     return;
   }
   //   we should alert ourself
-  console.error('unexpected error', error);
+  // console.error('unexpected error', error);
   res.status(500).send('internal server');
 };
