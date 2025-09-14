@@ -1,10 +1,8 @@
-import httpClient from 'supertest';
-import { app } from '../../../server';
-import TestAgent from 'supertest/lib/agent';
-import { authedTestClient, unAuthedTestClient } from
-import {helper} from  '../../helper/supertest.helper';
-import { userData } from '../../user.data';
-import { create } from 'domain';
+import { createRandomUser } from '../seeds/user.seed';
+import {unAuthedTestClient, authedTestClient} from '../../../tests/helper/supertest.helper';
+import { extractFields, removeFields } from '../../../utils/object.util';
+import { User } from '../user.entity';
+import { UserRepository } from '../user.repository';
 describe('userEndpoints', () => {
 it('GET /api/v1/users with unauthed agent will throw error', async () => {
     const response = await unAuthedTestClient.get('/api/v1/users');
@@ -27,28 +25,30 @@ it('GET /api/v1/users with unauthed agent will throw error', async () => {
       data: expect.any(Array)
   });
   });
-  it("POST /users should create user and return user", async () => {
-    const newUser = {
-      name: 'Test User',
-      email: 'test@example.com',
-      password: '12345678',
-      role: 'STUDENT',
-    };
-
+  it('POST /api/v1/users should Create user and return user and its saved to DB  ', async () => {
+    const newUserSeeds = extractFields(createRandomUser(), [
+      'name',
+      'password',
+      'email'
+    ]);
     const response = await authedTestClient
-      .post('/users')
-      .send(newUser)
-      .set('Accept', 'application/json');
-
-    expect(response.statusCode).toBe(201);
+      .post('/api/v1/users')
+      .send(newUserSeeds);
+    // check the response
     expect(response.body).toEqual({
       success: true,
-      data: expect.objectContaining({
-        id: expect.any(String),
-        name: 'Test User',
-        email: 'test@example.com',
-        role: 'STUDENT',
-      }),
+      data: expect.objectContaining<Partial<User>>({
+        name: newUserSeeds.name,
+        email: newUserSeeds.email
+      })
     });
+
+    expect(response.status).toBe(201);
+    // check that user saved in db
+    const userRepository = new UserRepository();
+    const createdUser = userRepository.findByEmail(newUserSeeds.email);
+
+    expect(createdUser).toBeDefined();//exist or not 
+    expect(Object.keys(createdUser!).length).toBeGreaterThanOrEqual(6);
   });
 });

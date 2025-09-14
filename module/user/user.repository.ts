@@ -5,8 +5,8 @@ import { userData } from './user.data';
 export class UserRepository {
   private users: User[]=[];
   private idCounter = 1;
- constructor(userDb:User[]=userData) {
-   this.users=userDb;}
+ constructor(users:User[]=userData) {
+   this.users=users;}
 
   findAll(): User[] {
     return this.users;
