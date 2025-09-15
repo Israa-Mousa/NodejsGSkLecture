@@ -83,6 +83,8 @@ app.use((req: Request, res: Response) => {
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
   handleError(error, res);
 });
+if(process.env.NODE_ENV !== 'test'){
+
 app.listen(PORT, () => {
   console.log('App is running in port: ', PORT);
-});
+})}

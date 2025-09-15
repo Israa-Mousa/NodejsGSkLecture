@@ -1,14 +1,12 @@
-export default {
-  preset: "ts-jest/presets/default-esm",   // TypeScript + ESM
+const { createDefaultPreset } = require("ts-jest");
+
+const tsJestTransformCfg = createDefaultPreset().transform;
+
+/** @type {import("jest").Config} **/
+module.exports = {
   testEnvironment: "node",
   transform: {
-    "^.+\\.[tj]s$": ["ts-jest", { useESM: true }],
+    ...tsJestTransformCfg,
   },
-  extensionsToTreatAsEsm: [".ts"],
-  moduleNameMapper: {
-    "^(\\.{1,2}/.*)\\.js$": "$1", // يخلي imports بدون .js تشتغل
-  },
-  transformIgnorePatterns: [
-    "node_modules/(?!(\\.pnpm/)?@faker-js/faker)", 
-  ],
+  coverageDirectory: "./coverage",
 };
