@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { UserController } from './user.controller';
-import { uploadSingle } from '../../config/multer.config';
 import { isAuthenticated } from '../../middlewares/auth.middleware';
 const router = Router();
 
@@ -14,10 +13,10 @@ router.get('/', userController.getUsers);
 router.get('/:uid', userController.getUser);
 
 // POST /api/users - Create user (with optional avatar)
-router.post('/', uploadSingle('avatar'), userController.createUser);
+router.post('/',  userController.createUser);
 
 // PUT /api/users/:id - Update user (with optional avatar)
-router.patch('/:id', uploadSingle('avatar'), userController.updateUser);
+router.patch('/:id', userController.updateUser);
 
 // DELETE /api/users/:id - Delete user
 router.delete('/:id', userController.deleteUser);

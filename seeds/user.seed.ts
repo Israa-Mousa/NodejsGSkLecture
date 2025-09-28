@@ -1,14 +1,13 @@
 import { faker } from "@faker-js/faker";
 import { User } from "../module/user/user.entity";
 export function createRandomUser(){
-  const randomUser: User = {
-       id: faker.string.uuid(),
-      name: faker.person.fullName(),
-      email: faker.internet.email(),
-      createdAt:faker.date.past(),
-       password: faker.internet.password(), 
-      updatedAt: faker.date.anytime(),
-      avatar: faker.image.avatar(),
-  }
+const randomUser: Omit<User, 'id'> = {
+    email: faker.internet.email(),
+    name: faker.person.fullName(),
+    password: faker.internet.password(),
+    createdAt: faker.date.past(),
+    updatedAt: faker.date.anytime(),
+    avatar: faker.image.avatar()
+  };
   return randomUser;
 }

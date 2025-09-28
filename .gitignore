@@ -25,7 +25,9 @@ out/
 Thumbs.db
 
 
-
+/coverage
 *.js
 *.js.map
 /dist
+
+/src/generated/prisma
