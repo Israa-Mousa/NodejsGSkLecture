@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { userService } from './user.service';
+
 export class UserController {
   private _userService =  userService;
 
@@ -18,7 +19,7 @@ export class UserController {
     const id = req.params.uid;
     if (!id) return res.status(400).json({ error: 'ID required' });
 
-    const user = this._userService.getUser(id);
+    const user = this._userService.getUser(Number(id));
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -46,7 +47,7 @@ export class UserController {
     const { name, email } = req.body;
     const avatar = req.file ? `/uploads/${req.file.filename}` : undefined;
 
-    const user = this._userService.updateUser(id, name, email, avatar);
+    const user = this._userService.updateUser(Number(id), name, email, avatar);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -59,7 +60,7 @@ export class UserController {
     const id = req.params.id;
     if (!id) return res.status(400).json({ error: 'ID required' });
 
-    const deleted = this._userService.deleteUser(id);
+    const deleted = this._userService.deleteUser(Number(id));
     if (!deleted) {
       return res.status(404).json({ error: 'User not found' });
     }

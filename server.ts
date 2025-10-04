@@ -12,7 +12,7 @@ import { get } from 'node:http';
 import { getEnvOrThrow } from './utils/utils';
 import { responseEnhancer } from './middlewares/response.middleware';
 //import { multerGlobalMiddleware } from './utils/global-middleware';
-
+import './services/mongoose..service';
 // const PORT = 4000;
 //const PORT = process.env.PORT;
 const PORT = getEnvOrThrow('PORT');

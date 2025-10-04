@@ -25,3 +25,7 @@ npx prisma generate
 npm install @prisma client
 
 npx prisma db seed
+
+ npm install mongoose
+
+ 
