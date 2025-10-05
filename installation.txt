@@ -28,4 +28,6 @@ npx prisma db seed
 
  npm install mongoose
 
+ test mongooose 
+
  
