@@ -8,8 +8,8 @@ export class UserController {
     req: Request<{}, {}, {}, { page: string; limit: string }>,
     res: Response
   ) => {
-    const page = Number(req.query.page);
-    const limit = Number(req.query.limit);
+    const page = Number(req.query.page)|| 1;
+    const limit = Number(req.query.limit)|| 10;
     const users = this._userService.getUsers(page, limit);
     //res.json(users);
     res.ok(users);
