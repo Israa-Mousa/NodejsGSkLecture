@@ -1,6 +1,6 @@
 import { object } from "zod";
 import { extend } from "zod/mini";
-import { UnifiedApiErrorResponse } from "../middlewares/response.middleware";
+import { ApiResponseMeta, UnifiedApiErrorResponse } from "../middlewares/response.middleware";
 
 declare module 'express-session' {
   interface SessionData {
@@ -33,7 +33,7 @@ namespace NodeJS{
 namespace Express {
  interface Response{
   create:(data:object)=>this ,
-  ok:(data:object)=>this ,
+  ok:(data:object ,meta?:ApiResponseMeta)=>this ,
 error:(data:UnifiedApiErrorResponse)=>this;
 }
 }

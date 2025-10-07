@@ -3,8 +3,8 @@ import { User } from './user.entity';
 import { prisma } from '../../sevices/prisma.service';
 import { UserRepositoryI } from './interfaces/user-repo-interface';
 
-export class UserRepository  implements UserRepositoryI {
-  private prismaUser = prisma.user;
+export class UserRepository implements UserRepositoryI {
+    private prismaUser = prisma.user;
 
   findAll(page = 1, limit = 10): Promise<User[]> {
     return this.prismaUser.findMany({
@@ -13,11 +13,12 @@ export class UserRepository  implements UserRepositoryI {
     });
   }
 
-  findById(id: number) {
+    findById(id: number) {
     return this.prismaUser.findUniqueOrThrow({
       where: { id }
     });
   }
+
 
   findByEmail(email: string) {
     return this.prismaUser.findUnique({
@@ -45,8 +46,10 @@ export class UserRepository  implements UserRepositoryI {
     });
   }
 
-  async delete(id: number) {
+  async delete(id: any) {
     const deletedUser = await this.prismaUser.delete({ where: { id } });
     return Boolean(deletedUser);
   }
+  
+
 }

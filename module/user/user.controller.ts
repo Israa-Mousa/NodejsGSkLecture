@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { userService } from './user.service';
-
+import { SuccessApiResponse, UnsuccessfulApiResponse } from '../../middlewares/response.middleware';
 export class UserController {
   private _userService =  userService;
 
   getUsers = (
     req: Request<{}, {}, {}, { page: string; limit: string }>,
-    res: Response
+    res: Response<SuccessApiResponse | UnsuccessfulApiResponse>
   ) => {
     const page = Number(req.query.page)|| 1;
     const limit = Number(req.query.limit)|| 10;

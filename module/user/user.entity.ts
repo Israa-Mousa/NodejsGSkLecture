@@ -1,14 +1,16 @@
-import { mongo } from "mongoose";
+// import { mongo } from "mongoose";
+
+import { ObjectId } from "mongoose";
 
 export interface User {
-  id: number;
+  id: ObjectId;
   name: string;
   email: string;
   avatar: string | undefined;
   createdAt: Date;
   updatedAt: Date;
   password: string; // hash value
-  posts:mongo.ObjectId[];
+ // posts:mongo.ObjectId[];
 }
 
 
