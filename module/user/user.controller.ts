@@ -4,15 +4,14 @@ import { SuccessApiResponse, UnsuccessfulApiResponse } from '../../middlewares/r
 export class UserController {
   private _userService =  userService;
 
-  getUsers = (
+  getUsers = async(
     req: Request<{}, {}, {}, { page: string; limit: string }>,
     res: Response<SuccessApiResponse | UnsuccessfulApiResponse>
   ) => {
     const page = Number(req.query.page)|| 1;
     const limit = Number(req.query.limit)|| 10;
-    const users = this._userService.getUsers(page, limit);
-    //res.json(users);
-    res.ok(users);
+    const { users, totalRecords } = await this._userService.getUsers(page, limit);
+    res.paginationResponse(users, { page, limit, totalRecords });
   };
 
   getUser = (req: Request<{ uid: string }>, res: Response) => {

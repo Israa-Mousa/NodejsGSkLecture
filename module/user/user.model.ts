@@ -19,7 +19,9 @@ const userSchema = new mongoose.Schema<User>(
     // createdAt: { type: Date, default: Date.now },
     // updatedAt: { type: Date, default: Date.now },
     // posts:[{type:mongoose.Schema.Types.ObjectId,ref:'Post'}]
-  } ,{ timestamps: true }
+  } ,{ timestamps: true,versionKey:false
+    // ,toJSON:schemaToJsonDefaultOption
+  }
  
 );
 

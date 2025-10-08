@@ -1,6 +1,7 @@
 import { object } from "zod";
 import { extend } from "zod/mini";
 import { ApiResponseMeta, UnifiedApiErrorResponse } from "../middlewares/response.middleware";
+import { CalculatePaginationMetaParams } from "./api-util";
 
 declare module 'express-session' {
   interface SessionData {
@@ -33,7 +34,13 @@ namespace NodeJS{
 namespace Express {
  interface Response{
   create:(data:object)=>this ,
-  ok:(data:object ,meta?:ApiResponseMeta)=>this ,
+  // ok:(data:object ,meta?:ApiResponseMeta)=>this ,
+  ok:(data:object )=>this ,
+  paginationResponse:(
+    data:object ,
+    meta:CalculatePaginationMetaParams)
+    =>this ,
+
 error:(data:UnifiedApiErrorResponse)=>this;
 }
 }

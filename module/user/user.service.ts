@@ -1,20 +1,21 @@
 import { UserRepository } from './user.repository';
 import { User } from './user.entity';
 import { LoginDTO } from '../auth/types/auth.dto';
-import { prisma } from '../../sevices/prisma.service';
+// import { prisma } from '../../sevices/prisma.service';
 import { UserRepositoryI } from './interfaces/user-repo-interface';
+import { userMongoRepository } from './user.mongorepository';
 
  class UserService {
-  constructor(private userRepo: UserRepositoryI) {}
+  constructor(private userRepo: UserRepositoryI=userMongoRepository) {}
 
  private repository = new UserRepository();
-  getUsers(page=1, limit=10):Promise< User[]> {
+  getUsers(page=1, limit=10) {
    return this.userRepo.findAll(page,limit);
  
   }
 
-    getUser(id: number){
-    return this.repository.findById(id);
+    getUser(id: string){
+    return this.userRepo.findById(id);
   }
    findByEmail(email:string){
     return  this.userRepo.findByEmail(email);

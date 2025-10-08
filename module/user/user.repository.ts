@@ -1,6 +1,6 @@
 import { Prisma } from '../../src/generated/prisma';
 import { User } from './user.entity';
-import { prisma } from '../../sevices/prisma.service';
+import { prisma } from '../../services/prisma.service';
 import { UserRepositoryI } from './interfaces/user-repo-interface';
 
 export class UserRepository implements UserRepositoryI {

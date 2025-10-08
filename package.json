@@ -5,7 +5,8 @@
   "scripts": {
     "test": "jest --coverage=true",
     "dev": " tsx watch server.ts",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "seed-mongoose":"tsx seeds/seed-mongoose.ts"
   },
   "keywords": [],
   "author": "",

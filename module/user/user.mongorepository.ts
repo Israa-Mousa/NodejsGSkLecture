@@ -1,12 +1,12 @@
 import en from 'zod/v4/locales/en.js';
  import { User } from './user.entity';
 
-import { prisma } from '../../sevices/prisma.service';
+import { prisma } from '../../services/prisma.service';
 import { Prisma } from '../../src/generated/prisma';
 import { ObjectId } from 'mongoose';
 import { UserRepositoryI } from './interfaces/user-repo-interface';
 import { UserModel } from './user.model';
-export class UserRepository implements UserRepositoryI {
+export class UserMongoRepository implements UserRepositoryI {
   async findAll(page: number, limit: number) {
     const users = await UserModel.find()
       .skip((page - 1) * limit)
@@ -14,66 +14,53 @@ export class UserRepository implements UserRepositoryI {
       .exec();
 
     const totalRecords = await UserModel.countDocuments().exec();
+    console.log(users[0]?.toJSON({getters:true}),'server side json');
+    console.log(users[0]?.toObject({getters:true}),'server side object');
+
     return { users, totalRecords };
   }
+ findById(id: string): Promise<User | null> {
+    return UserModel.findById(id).exec();
+ }
+  findByEmail(email: string) {
+    return UserModel.findOne({email }).exec();
+   }
+   //return this.users.find((user) => user.email === email);
+ 
+ async create(name: string, email: string, password: string, avatar?: string):Promise<User>{
+   return UserModel.create({
+     name,
+     email,
+     password,
+     avatar
+   });
+   // const user: Omit<User,'id'> = {
 
-  findById(id: number): Promise<User | null> {
-    throw new Error('Method not implemented.');
-  }
-  findByEmail(email: string): Promise<User | null> {
-    throw new Error('Method not implemented.');
-  }
-  create(name: string, email: string, password: string, avatar?: string): Promise<User> {
-    throw new Error('Method not implemented.');
-  }
-  update(id: number, name?: string, email?: string, avatar?: string): Promise<User | null> {
-    throw new Error('Method not implemented.');
-  }
-  delete(id: number): Promise<boolean> {
-    throw new Error('Method not implemented.');
-  }
-  userModel: any;
+ }
 
-//  findAll(page=1,limit=10):Promise<User[]> {
-//     return this.userModel.find().exec();
-//   }
-//     findById(id: ObjectId){
-//     //return this.users.find((user) => user.id === id);
-//     return this.userModel.findById(id).exec();
-//   }
+ update(
+   id: string,
+   name?: string,
+   email?: string,
+   avatar?: string
+ ):Promise<User | null> {
+ return  UserModel.findByIdAndUpdate(id,{
+     name,
+     email,
+     avatar
+   },{new:true}).exec();
 
-  
-//   findByEmail(email: string) {
-//      return this.userModel.findOne({email }).exec();
-//     }
-//     //return this.users.find((user) => user.email === email);
-  
-//   async create(name: string, email: string, password: string, avatar?: string){
-//     return this.userModel.create({
-//       name,
-//       email,
-//       password,
-//       avatar: avatar || undefined
-//     });
-//     // const user: Omit<User,'id'> = {
-//   }
+ }
 
-//   update(
-//     id: number,
-//     name?: string,
-//     email?: string,
-//     avatar?: string
-//   ) {
-//   return  this.userModel.findByIdAndUpdate(id,{
-//       name,
-//       email,
-//       avatar
-//     },{new:true}).exec();
+ async delete(id: string): Promise<boolean> {
+  const result = await UserModel.findByIdAndDelete(id);
 
-//   }
-
-//   delete(id: ObjectId) {
-//     return this.userModel.findByIdAndDelete(id).exec(); 
-//   }
+  return Boolean(result);
 }
+
+
+
   
+
+}
+export const userMongoRepository = new UserMongoRepository();

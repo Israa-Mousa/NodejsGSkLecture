@@ -9,4 +9,5 @@ module.exports = {
     ...tsJestTransformCfg,
   },
   coverageDirectory: "./coverage",
+  detectOpenHandles:true,
 };

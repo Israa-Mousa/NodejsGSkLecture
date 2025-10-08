@@ -3,7 +3,8 @@
 import { ObjectId } from "mongoose";
 
 export interface User {
-  id: ObjectId;
+  // id: ObjectId;
+  id: string;
   name: string;
   email: string;
   avatar: string | undefined;
