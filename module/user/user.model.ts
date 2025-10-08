@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { User } from "./user.entity";
+import { schemaToJsonDefaultOption } from "../../services/mongoose.service";
 
 const userSchema = new mongoose.Schema<User>(
   {
@@ -20,7 +21,7 @@ const userSchema = new mongoose.Schema<User>(
     // updatedAt: { type: Date, default: Date.now },
     // posts:[{type:mongoose.Schema.Types.ObjectId,ref:'Post'}]
   } ,{ timestamps: true,versionKey:false
-    // ,toJSON:schemaToJsonDefaultOption
+    ,toJSON:schemaToJsonDefaultOption
   }
  
 );
