@@ -11,7 +11,8 @@ class PostRepository {
     }
     async getPostById(id: string):Promise<Post | null> {
 
-        return PostModel.findById(id).populate('authorId');
+        const post=await PostModel.findById(id).populate('authorId');
+        return post
     }
 
 
