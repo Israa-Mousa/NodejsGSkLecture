@@ -4,12 +4,23 @@ import { CustomError } from "./exception";
 import { ModuleNameType } from "./constant";
 import { HttpErrorStatus } from "./util.types";
 import th from "zod/v4/locales/th.js";
+import mongoose from "mongoose";
+import z from 'zod';
+
+export const mongoObjectIdSchema = z
+  .string()
+  .refine((val) => mongoose.isValidObjectId(val), {
+    message: 'Invalid ObjectId'
+  });
 
 export const  zodValidation=<T>(schema:ZodType<T>,payload:T,moduleName:ModuleNameType)=>{
 //validate
 // return the validated data
 // catch error
 // custom error c
+
+
+
 try {
     const safeData=schema.parse(payload);
     return safeData;

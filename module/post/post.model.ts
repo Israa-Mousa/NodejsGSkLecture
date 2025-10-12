@@ -1,21 +1,27 @@
 // schema
 
-import { dmmfToRuntimeDataModel } from '@prisma/client/runtime/client';
-import mongoose, { model, Schema, Types } from 'mongoose';
-type Post={
-    content: string;
-    title: string;
-    user_id: Types.ObjectId;
-    createdAt?: Date;
-    updatedAt?: Date;
-}
-const postSchema = new  mongoose.Schema<Post>(
+import { model, Schema } from 'mongoose';
+import { Post } from './post.entity';
+import { schemaToJsonDefaultOption } from '../../services/mongoose.service';
+import { userMongoRepository } from '../user/user.mongorepository';
+
+const postSchema = new Schema<Post>(
   {
     content: { type: 'String', required: true },
     title: { type: 'String', required: true },
-    user_id:{type:mongoose.Schema.Types.ObjectId,ref:'User',required:true}
+    authorId: {
+      type: 'ObjectId',
+      ref: 'User',
+      required: true,
+      validate: {
+        validator: async function (v: string) {
+          const user = await userMongoRepository.findById(v);
+          if (!user) throw new Error('Author not found');
+        }
+      }
+    }
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: schemaToJsonDefaultOption }
 );
 
 export const PostModel = model<Post>('Post', postSchema);
