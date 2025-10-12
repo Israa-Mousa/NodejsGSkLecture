@@ -6,6 +6,15 @@ import { HttpErrorStatus } from "./util.types";
 import th from "zod/v4/locales/th.js";
 import mongoose from "mongoose";
 import z from 'zod';
+<<<<<<< HEAD
+
+export const mongoObjectIdSchema = z
+  .string()
+  .refine((val) => mongoose.isValidObjectId(val), {
+    message: 'Invalid ObjectId'
+  });
+=======
+>>>>>>> b3daadaf8b2c3d87c92943b35219086e76d959d4
 
 export const mongoObjectIdSchema = z
   .string()
@@ -13,7 +22,8 @@ export const mongoObjectIdSchema = z
     message: 'Invalid ObjectId'
   });
 
-export const  zodValidation=<T>(schema:ZodType<T>,payload:T,moduleName:ModuleNameType)=>{
+export const  zodValidation=<T>
+(schema:ZodType<T>,payload:T,moduleName:ModuleNameType)=>{
 //validate
 // return the validated data
 // catch error

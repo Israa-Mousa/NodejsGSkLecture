@@ -1,5 +1,6 @@
 // schema
 
+
 import { model, Schema } from 'mongoose';
 import { Post } from './post.entity';
 import { schemaToJsonDefaultOption } from '../../services/mongoose.service';
@@ -22,6 +23,6 @@ const postSchema = new Schema<Post>(
     }
   },
   { timestamps: true, toJSON: schemaToJsonDefaultOption }
-);
+
 
 export const PostModel = model<Post>('Post', postSchema);

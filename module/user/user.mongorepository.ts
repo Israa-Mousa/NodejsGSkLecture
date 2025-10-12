@@ -2,11 +2,11 @@ import en from 'zod/v4/locales/en.js';
  import { User } from './user.entity';
 
 import { prisma } from '../../services/prisma.service';
-import { Prisma } from '../../src/generated/prisma';
-import { ObjectId } from 'mongoose';
+import { ClientSession, ObjectId } from 'mongoose';
 import { UserRepositoryI } from './interfaces/user-repo-interface';
 import { UserModel } from './user.model';
 export class UserMongoRepository implements UserRepositoryI {
+
   async findAll(page: number, limit: number) {
     const users = await UserModel.find()
       .skip((page - 1) * limit)
@@ -51,6 +51,19 @@ export class UserMongoRepository implements UserRepositoryI {
    },{new:true}).exec();
 
  }
+ incrementPostCount(
+    id: string,
+    action: 'increment' | 'decrement',
+    session: ClientSession
+  ) {
+    const updatedCount = action === 'increment' ? 1 : -1;
+
+    return UserModel.updateOne(
+      { _id: id },
+      { $inc: { postCounts: updatedCount } },
+      { session }
+    ).exec();
+  }
 
  async delete(id: string): Promise<boolean> {
   const result = await UserModel.findByIdAndDelete(id);

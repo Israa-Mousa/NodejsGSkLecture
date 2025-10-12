@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { User } from "./user.entity";
+import { removeFields } from '../../utils/object.util';
 import { schemaToJsonDefaultOption } from '../../services/mongoose.service';
-
 const userSchema = new mongoose.Schema<User>(
   {
     name: { type: String, required: true },
@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema<User>(
   } ,{ timestamps: true,versionKey:false
   ,toJSON:schemaToJsonDefaultOption
   }
+ 
  
 );
 

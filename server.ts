@@ -13,6 +13,7 @@ import { getEnvOrThrow } from './utils/utils';
 import { responseEnhancer } from './middlewares/response.middleware';
 //import { multerGlobalMiddleware } from './utils/global-middleware';
 import './services/mongoose.service';
+import { postRouter } from './module/post/post.router';
 
 // const PORT = 4000;
 //const PORT = process.env.PORT;
@@ -54,6 +55,7 @@ app.use(
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/auth', authRouter); // auth router
+app.use('/api/v1/posts',postRouter); // post router
 //app.use(multerGlobalMiddleware)
 // app.use('/users', authMiddleware);
 
