@@ -7,7 +7,7 @@ import { prisma } from '../../sevices/prisma.service';
  private repository = new UserRepository();
   getUsers(page: number, limit: number):Promise< User[]> {
    return this.repository.findAll({});
- 
+//////////////////
   }
 
     getUser(id: number){
