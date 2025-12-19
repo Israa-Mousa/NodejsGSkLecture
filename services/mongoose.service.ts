@@ -1,6 +1,6 @@
 import mongoose, { Document, FlatRecord } from 'mongoose';
-import { getEnvOrThrow } from '../utils/utils';
-import { removeFields } from '../utils/object.util';
+import { getEnvOrThrow } from '../utils/utils.js';
+import { removeFields } from '../utils/object.util.js';
 
 mongoose
   .connect(getEnvOrThrow('MONGODB_URL') as string)

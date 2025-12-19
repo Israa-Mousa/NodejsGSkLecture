@@ -30,6 +30,6 @@ npx prisma db seed
 
  test mongooose 
 
- bbb
+ npx tsx src/server.ts   
 
  
